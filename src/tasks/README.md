@@ -10,7 +10,7 @@
 
 ### GET /tasks/:id
 Получить задачу по ID
-- **Параметры**: `id` - UUID строки задачи
+- **Параметры**: `id` - ID задачи (число)
 - **Ответ**: Объект задачи
 - **Ошибки**: 404 если задача не найдена
 
@@ -23,11 +23,11 @@
     "description": "string" // опциональное
   }
   ```
-- **Ответ**: Созданная задача с UUID
+- **Ответ**: Созданная задача с ID
 
 ### PATCH /tasks/:id
 Обновить задачу
-- **Параметры**: `id` - UUID строки задачи
+- **Параметры**: `id` - ID задачи (число)
 - **Тело запроса**:
   ```json
   {
@@ -41,7 +41,7 @@
 
 ### DELETE /tasks/:id
 Удалить задачу
-- **Параметры**: `id` - UUID строки задачи
+- **Параметры**: `id` - ID задачи (число)
 - **Ответ**: Удаленная задача
 - **Ошибки**: 404 если задача не найдена
 
@@ -49,7 +49,7 @@
 
 ```typescript
 {
-  id: string;          // UUID
+  id: number;          // ID задачи (число, начиная с 1)
   title: string;       // Название задачи
   description?: string; // Описание (опционально)
   completed: boolean;   // Статус выполнения
@@ -74,17 +74,17 @@ curl http://localhost:3000/tasks
 
 ### Получение задачи по ID
 ```bash
-curl http://localhost:3000/tasks/{uuid}
+curl http://localhost:3000/tasks/1
 ```
 
 ### Обновление задачи
 ```bash
-curl -X PATCH http://localhost:3000/tasks/{uuid} \
+curl -X PATCH http://localhost:3000/tasks/1 \
   -H "Content-Type: application/json" \
   -d '{"completed": true}'
 ```
 
 ### Удаление задачи
 ```bash
-curl -X DELETE http://localhost:3000/tasks/{uuid}
+curl -X DELETE http://localhost:3000/tasks/1
 ```
