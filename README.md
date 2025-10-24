@@ -4,23 +4,39 @@
 
 ## Быстрый запуск с Docker
 
-### 1. Клонирование и запуск
+### 1. Клонирование и запуск (рекомендуется)
+
+**Для Ubuntu/Linux/macOS:**
+```bash
+git clone <URL_РЕПОЗИТОРИЯ>
+cd task-server
+chmod +x start.sh
+./start.sh
+```
+
+**Для Windows:**
+```powershell
+git clone <URL_РЕПОЗИТОРИЯ>
+cd task-server
+.\start.ps1
+```
+
+### 2. Ручной запуск
 ```bash
 git clone <URL_РЕПОЗИТОРИЯ>
 cd task-server
 
-# Создаем директорию для базы данных (если не существует)
-mkdir -p database/prisma/database
-
-# Запускаем контейнер
-docker-compose up -d
+# Запускаем контейнер (база данных создастся автоматически)
+docker-compose up --build -d
 ```
 
-### 2. Проверка работы
+> **✅ Проблема с базой данных решена!** База данных теперь создается автоматически при первом запуске контейнера.
+
+### 3. Проверка работы
 - API: http://localhost:3000
 - Swagger UI: http://localhost:3000/api
 
-### 3. Просмотр логов (если есть проблемы)
+### 4. Просмотр логов (если есть проблемы)
 ```bash
 docker-compose logs -f
 ```
@@ -69,6 +85,7 @@ npm run docker:logs
 ## Документация
 
 - [Подробная инструкция по Docker](docs/docker-setup.md)
+- [Инструкция для Ubuntu](UBUNTU_SETUP.md) - пошаговая настройка на Ubuntu
 - [Swagger UI](http://localhost:3000/api) - интерактивное тестирование API
 
 ## Технологии
@@ -82,18 +99,23 @@ npm run docker:logs
 ## Решение проблем
 
 ### Ошибка "Unable to open the database file"
-Если вы получаете эту ошибку при запуске в Docker:
+Эта проблема решена в текущей версии! База данных теперь создается автоматически при запуске контейнера.
 
-1. **Убедитесь, что директория существует:**
+Если проблема все еще возникает:
+
+1. **Используйте скрипт быстрого запуска:**
    ```bash
-   mkdir -p database/prisma/database
+   # Linux/macOS
+   ./start.sh
+   
+   # Windows
+   .\start.ps1
    ```
 
-2. **Очистите и пересоберите контейнер:**
+2. **Или очистите все и пересоберите:**
    ```bash
-   docker-compose down
-   docker-compose build --no-cache
-   docker-compose up -d
+   docker-compose down -v
+   docker-compose up --build -d
    ```
 
 3. **Проверьте логи:**

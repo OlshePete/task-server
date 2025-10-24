@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   task-server:
     build: .
@@ -7,7 +5,7 @@ services:
       - "3000:3000"
     volumes:
       # Монтируем папку с базой данных для сохранения данных
-      - ./database/prisma/database:/app/database/prisma/database
+      - task-db-data:/app/database/prisma/database
     environment:
       - NODE_ENV=production
       - DATABASE_URL=file:./database/prisma/database/task-server.db
@@ -18,3 +16,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+volumes:
+  task-db-data:
