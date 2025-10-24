@@ -27,7 +27,9 @@
     "docker:run": "docker run -p 3000:3000 task-server",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f"
+    "docker:logs": "docker-compose logs -f",
+    "docker:setup": "chmod +x scripts/setup-and-run.sh && ./scripts/setup-and-run.sh",
+    "docker:rebuild": "docker-compose down && docker-compose build --no-cache && docker-compose up -d"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

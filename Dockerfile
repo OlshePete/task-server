@@ -19,17 +19,19 @@ RUN npx prisma generate --schema=./database/prisma/schema.prisma
 # Собираем приложение
 RUN npm run build
 
-# Создаем директорию для базы данных
-RUN mkdir -p /app/database/prisma/database
+# Создаем директорию для базы данных с правильными правами
+RUN mkdir -p /app/database/prisma/database && \
+    chmod 755 /app/database/prisma/database
 
 # Устанавливаем переменную окружения для базы данных
 ENV DATABASE_URL="file:./database/prisma/database/task-server.db"
 
-# Создаем базу данных и применяем миграции
-RUN npx prisma migrate deploy --schema=./database/prisma/schema.prisma
+# Копируем скрипт инициализации
+COPY scripts/docker-entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 # Открываем порт 3000
 EXPOSE 3000
 
-# Запускаем приложение
-CMD ["node", "dist/src/main"]
+# Запускаем скрипт инициализации
+CMD ["/app/entrypoint.sh"]
