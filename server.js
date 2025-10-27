@@ -116,7 +116,71 @@ app.get('/tasks/user/:userId', (req, res) => {
   const userTasks = tasks.filter(t => t.userId === parseInt(req.params.userId));
   res.json(userTasks);
 });
+// Эндпоинт для получения типов TypeScript
+app.get('/api/types', (req, res) => {
+  const types = `
+// Types for API responses
+export interface ITask {
+  id: number;
+  title: string;
+  description: string;
+  complete: boolean;
+  createdAt: number;
+  updatedAt: number;
+  userId: number;
+}
 
+export interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean;
+  message?: string;
+  data?: T;
+}
+
+// API Response types
+export type TasksResponse = ApiResponse<ITask[]>;
+export type TaskResponse = ApiResponse<ITask>;
+export type UsersResponse = ApiResponse<IUser[]>;
+export type UserResponse = ApiResponse<IUser>;
+  `;
+  
+  res.set('Content-Type', 'text/typescript');
+  res.send(types);
+});
+// Эндпоинт для получения типов в JSON Schema формате
+app.get('/api/schemas', (req, res) => {
+  const schemas = {
+    Task: {
+      type: 'object',
+      properties: {
+        id: { type: 'number' },
+        title: { type: 'string' },
+        description: { type: 'string' },
+        complete: { type: 'boolean' },
+        createdAt: { type: 'number' },
+        updatedAt: { type: 'number' },
+        userId: { type: 'number' }
+      },
+      required: ['id', 'title', 'description', 'userId']
+    },
+    User: {
+      type: 'object',
+      properties: {
+        id: { type: 'number' },
+        name: { type: 'string' },
+        email: { type: 'string' }
+      },
+      required: ['id', 'name', 'email']
+    }
+  };
+  
+  res.json(schemas);
+});
 // Запуск сервера
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
